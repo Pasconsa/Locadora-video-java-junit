@@ -5,12 +5,11 @@ import static org.junit.Assert.assertThat;
 import java.util.Date;
 
 import org.hamcrest.CoreMatchers;
-import org.hamcrest.Matcher;
-import org.hamcrest.core.Is;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ErrorCollector;
+import org.junit.rules.ExpectedException;
 
 import br.ce.wcaquino.entidades.Filme;
 import br.ce.wcaquino.entidades.Locacao;
@@ -23,8 +22,11 @@ public class LocacaoServiceTest {
 	@Rule
 	public ErrorCollector error = new ErrorCollector();
 	
+	@Rule  // utilizado na terceira teste nova
+	public ExpectedException exception = ExpectedException.none();
+	
 	@Test
-	public void test() {
+	public void test() throws Exception {
 		//cenario
 		LocacaoService service = new LocacaoService();
 		Usuario usuario = new Usuario("Usuario 1");
@@ -34,11 +36,57 @@ public class LocacaoServiceTest {
 		Locacao locacao = service.alugarFilme(usuario, filme);
 		
 		//verificacao
-		error.checkThat(locacao.getValor(), CoreMatchers.is(CoreMatchers.equalTo(6.0)));
+		error.checkThat(locacao.getValor(), CoreMatchers.is(CoreMatchers.equalTo(5.0)));
 		error.checkThat(DataUtils.isMesmaData(locacao.getDataLocacao(), new Date()), CoreMatchers.is(true));
-		error.checkThat(DataUtils.isMesmaData(locacao.getDataRetorno(), DataUtils.obterDataComDiferencaDias(1)), CoreMatchers.is(false));
+		error.checkThat(DataUtils.isMesmaData(locacao.getDataRetorno(), DataUtils.obterDataComDiferencaDias(1)), CoreMatchers.is(true));
 	}
-
 	
+	@Test(expected=Exception.class)  //01 Teste elegante
+	public void testLocacao_filmeSemEstoque() throws Exception {
+		//cenario
+		LocacaoService service = new LocacaoService();
+		Usuario usuario = new Usuario("Usuario 1");
+		Filme filme = new Filme("Filme 1", 0, 5.0);
+		
+		//acao
+		service.alugarFilme(usuario, filme);
+	}
+	
+	
+
+	/*02 Teste robusto todo controle pra mim sem j unit (aguardando correção do professor)
+	@Test
+	public void testLocacao_filmeSemEstoque_2() {
+		//cenario
+		LocacaoService service = new LocacaoService();
+		Usuario usuario = new Usuario("Usuario 1");
+		Filme filme = new Filme("Filme 2", 1, 4.0);
+		
+		//acao
+        try {
+            service.alugarFilme(usuario, filme);
+            Assert.fail("Deveria ter lancado uma excecao");
+        } catch (Exception e) {
+            Assert.assertThat(e.getMessage(), CoreMatchers.is("Filme sem Estoque"));
+        }
+	}  */
+		
+		
+
+	@Test  //03 forma nova tratamento de excessão esta em uma nova @rule
+	public void testLocacao_filmeSemEstoque_3() throws Exception {
+		//cenario
+		LocacaoService service = new LocacaoService();
+		Usuario usuario = new Usuario("Usuario 1");
+		Filme filme = new Filme("Filme 1", 0, 5.0);
+		
+		exception.expect(Exception.class);
+		exception.expectMessage("Filme sem estoque");
+		
+		//acao
+		service.alugarFilme(usuario, filme);
+		
+		
+	}
 
 }
