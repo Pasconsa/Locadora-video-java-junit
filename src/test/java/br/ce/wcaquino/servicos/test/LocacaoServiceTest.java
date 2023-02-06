@@ -14,6 +14,7 @@ import org.junit.rules.ExpectedException;
 import br.ce.wcaquino.entidades.Filme;
 import br.ce.wcaquino.entidades.Locacao;
 import br.ce.wcaquino.entidades.Usuario;
+import br.ce.wcaquino.exceptions.FilmeSemEstoqueException;
 import br.ce.wcaquino.servicos.LocacaoService;
 import br.ce.wcaquino.utils.DataUtils;
 
@@ -41,7 +42,9 @@ public class LocacaoServiceTest {
 		error.checkThat(DataUtils.isMesmaData(locacao.getDataRetorno(), DataUtils.obterDataComDiferencaDias(1)), CoreMatchers.is(true));
 	}
 	
-	@Test(expected=Exception.class)  //01 Teste elegante
+	
+	
+	@Test(expected= FilmeSemEstoqueException.class)  //01 Teste elegante com a classe exception
 	public void testLocacao_filmeSemEstoque() throws Exception {
 		//cenario
 		LocacaoService service = new LocacaoService();
@@ -53,40 +56,5 @@ public class LocacaoServiceTest {
 	}
 	
 	
-
-	/*02 Teste robusto todo controle pra mim sem j unit (aguardando correção do professor)
-	@Test
-	public void testLocacao_filmeSemEstoque_2() {
-		//cenario
-		LocacaoService service = new LocacaoService();
-		Usuario usuario = new Usuario("Usuario 1");
-		Filme filme = new Filme("Filme 2", 1, 4.0);
-		
-		//acao
-        try {
-            service.alugarFilme(usuario, filme);
-            Assert.fail("Deveria ter lancado uma excecao");
-        } catch (Exception e) {
-            Assert.assertThat(e.getMessage(), CoreMatchers.is("Filme sem Estoque"));
-        }
-	}  */
-		
-		
-
-	@Test  //03 forma nova tratamento de excessão esta em uma nova @rule
-	public void testLocacao_filmeSemEstoque_3() throws Exception {
-		//cenario
-		LocacaoService service = new LocacaoService();
-		Usuario usuario = new Usuario("Usuario 1");
-		Filme filme = new Filme("Filme 1", 0, 5.0);
-		
-		exception.expect(Exception.class);
-		exception.expectMessage("Filme sem estoque");
-		
-		//acao
-		service.alugarFilme(usuario, filme);
-		
-		
-	}
 
 }
