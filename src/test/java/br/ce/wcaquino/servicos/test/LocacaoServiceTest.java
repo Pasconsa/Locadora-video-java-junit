@@ -1,5 +1,6 @@
 package br.ce.wcaquino.servicos.test;
 
+import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 import java.util.Date;
@@ -15,6 +16,7 @@ import br.ce.wcaquino.entidades.Filme;
 import br.ce.wcaquino.entidades.Locacao;
 import br.ce.wcaquino.entidades.Usuario;
 import br.ce.wcaquino.exceptions.FilmeSemEstoqueException;
+import br.ce.wcaquino.exceptions.LocadoraException;
 import br.ce.wcaquino.servicos.LocacaoService;
 import br.ce.wcaquino.utils.DataUtils;
 
@@ -53,6 +55,39 @@ public class LocacaoServiceTest {
 		
 		//acao
 		service.alugarFilme(usuario, filme);
+	}
+	
+	
+	@Test   // teste robusto com classe exception
+	public void testLocacao_usuarioVazio() throws FilmeSemEstoqueException {
+		//cenario
+		LocacaoService service = new LocacaoService();
+		Filme filme = new Filme("Filme 2" , 1, 4.0);
+		
+		//acao
+		
+			try {
+				service.alugarFilme(null,  filme);
+				Assert.fail();
+			} catch (LocadoraException e) {
+				// TODO Auto-generated catch block
+				assertThat(e.getMessage(), is("Usuario vazio"));
+			}
+		
+	}
+	
+	
+	@Test  // Teste forma nova , teste que valida o filme
+	public void testLocacao_FilmeVazio() throws FilmeSemEstoqueException, LocadoraException{
+		//cenario
+		LocacaoService service = new LocacaoService();
+		Usuario usuario = new Usuario("Usuario 1");
+		
+		exception.expect(LocadoraException.class);
+		exception.expectMessage("Filme vazio");
+		
+		//acao
+		service.alugarFilme(usuario, null);
 	}
 	
 	

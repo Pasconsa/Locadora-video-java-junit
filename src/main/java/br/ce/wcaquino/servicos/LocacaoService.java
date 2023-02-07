@@ -8,14 +8,26 @@ import br.ce.wcaquino.entidades.Filme;
 import br.ce.wcaquino.entidades.Locacao;
 import br.ce.wcaquino.entidades.Usuario;
 import br.ce.wcaquino.exceptions.FilmeSemEstoqueException;
+import br.ce.wcaquino.exceptions.LocadoraException;
 
 
 public class LocacaoService {
 	
-		public Locacao alugarFilme(Usuario usuario, Filme filme) throws Exception { //lançado uma excessão caso o limite do filme seja zero.
+		public Locacao alugarFilme(Usuario usuario, Filme filme) throws FilmeSemEstoqueException, LocadoraException { //lançado uma excessão caso o limite do filme seja zero.
+			
+			
+			if(usuario == null) {
+				throw new LocadoraException("Usuario vazio");
+			}
+			
+			if(filme == null) {
+				throw new LocadoraException("Filme vazio");
+			}
+			
 			if(filme.getEstoque() == 0) {
 				throw new FilmeSemEstoqueException();
 			}
+			
 		
 		Locacao locacao = new Locacao();
 		locacao.setFilme(filme);
