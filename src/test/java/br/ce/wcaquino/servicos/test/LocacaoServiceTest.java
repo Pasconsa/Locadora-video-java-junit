@@ -28,6 +28,9 @@ public class LocacaoServiceTest {
 	@Rule  // utilizado na terceira teste nova
 	public ExpectedException exception = ExpectedException.none();
 	
+	
+	
+	
 	@Test
 	public void test() throws Exception {
 		//cenario
