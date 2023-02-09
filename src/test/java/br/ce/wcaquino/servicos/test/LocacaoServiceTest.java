@@ -34,7 +34,7 @@ public class LocacaoServiceTest {
 	
 	
 	@Test
-	public void test() throws Exception {
+	public void deveAlugarFilme() throws Exception {
 		//cenario
 		LocacaoService service = new LocacaoService();
 		Usuario usuario = new Usuario("Usuario 1");
@@ -52,7 +52,7 @@ public class LocacaoServiceTest {
 	
 	
 	@Test(expected= FilmeSemEstoqueException.class)  //01 Teste elegante com a classe exception
-	public void testLocacao_filmeSemEstoque() throws Exception {
+	public void naoDeveAlugarFilmeSemEstoque() throws Exception {
 		//cenario
 		LocacaoService service = new LocacaoService();
 		Usuario usuario = new Usuario("Usuario 1");
@@ -63,7 +63,7 @@ public class LocacaoServiceTest {
 	
 	
 	@Test   // teste robusto com classe exception
-	public void testLocacao_usuarioVazio() throws FilmeSemEstoqueException {
+	public void naoDeveAlugarFilmeSemUsuario() throws FilmeSemEstoqueException {
 		//cenario
 		LocacaoService service = new LocacaoService();
 		List<Filme> filmes = Arrays.asList(new Filme("Filme 1", 2, 5.0));
@@ -82,7 +82,7 @@ public class LocacaoServiceTest {
 	
 	
 	@Test  // Teste forma nova , teste que valida o filme
-	public void testLocacao_FilmeVazio() throws FilmeSemEstoqueException, LocadoraException{
+	public void naoDeveAlugarFilmeSemFilme() throws FilmeSemEstoqueException, LocadoraException{
 		//cenario
 		LocacaoService service = new LocacaoService();
 		Usuario usuario = new Usuario("Usuario 1");
@@ -94,6 +94,87 @@ public class LocacaoServiceTest {
 		service.alugarFilme(usuario, null);
 	}
 	
+	@ Test
+	public void devoPagar75pctNoFilme3 () throws FilmeSemEstoqueException, LocadoraException {
+		
+		//cenario vou precisar de um usuario para alugar e 3 filmes para dar desconto e alocacao filme
+		
+		Usuario usuario = new Usuario ();
+		
+		List<Filme> filmes = Arrays.asList(new Filme("Filme1", 2 , 4.0), new Filme("Filme2", 2 , 4.0),new Filme("Filme3", 2 , 4.0));
+		
+		LocacaoService service = new LocacaoService();
+		
+		//acao
+		
+		Locacao resultado = service.alugarFilme(usuario, filmes);
+		
+		//verificação 4+4+3 =11
+		assertThat(resultado.getValor(), is(11.0));
+		
+	}
 	
+	@ Test
+	public void devoPagar50pctNoFilme4 () throws FilmeSemEstoqueException, LocadoraException {
+		
+		//cenario vou precisar de um usuario para alugar e 4 filmes para dar desconto e alocacao filme
+		
+		Usuario usuario = new Usuario ();
+		
+		List<Filme> filmes = Arrays.asList(new Filme("Filme1", 2 , 4.0), new Filme("Filme2", 2 , 4.0),new Filme("Filme3", 2 , 4.0),new Filme("Filme4", 2 , 4.0));
+		
+		LocacaoService service = new LocacaoService();
+		
+		//acao
+		
+		Locacao resultado = service.alugarFilme(usuario, filmes);
+		
+		//verificação 4+4+3+2 =13
+		assertThat(resultado.getValor(), is(13.0));
+		
+	}
+	
+	
+	@ Test
+	public void devoPagar25pctNoFilme5 () throws FilmeSemEstoqueException, LocadoraException {
+		
+		//cenario vou precisar de um usuario para alugar e 5 filmes para dar desconto e alocacao filme
+		
+		Usuario usuario = new Usuario ();
+		
+		List<Filme> filmes = Arrays.asList(new Filme("Filme1", 2 , 4.0), new Filme("Filme2", 2 , 4.0),new Filme("Filme3", 2 , 4.0),new Filme("Filme4", 2 , 4.0) 
+				,new Filme("Filme5", 2 , 4.0));
+		
+		LocacaoService service = new LocacaoService();
+		
+		//acao
+		
+		Locacao resultado = service.alugarFilme(usuario, filmes);
+		
+		//verificação 4+4+3+2+1 =14
+		assertThat(resultado.getValor(), is(14.0));
+		
+	}
+	
+	@ Test
+	public void devoPagar0pctNoFilme6 () throws FilmeSemEstoqueException, LocadoraException {
+		
+		//cenario vou precisar de um usuario para alugar e 5 filmes para dar desconto e alocacao filme
+		
+		Usuario usuario = new Usuario ();
+		
+		List<Filme> filmes = Arrays.asList(new Filme("Filme1", 2 , 4.0), new Filme("Filme2", 2 , 4.0),new Filme("Filme3", 2 , 4.0),new Filme("Filme4", 2 , 4.0) 
+				,new Filme("Filme5", 2 , 4.0),new Filme("Filme6", 2 , 4.0));
+		
+		LocacaoService service = new LocacaoService();
+		
+		//acao
+		
+		Locacao resultado = service.alugarFilme(usuario, filmes);
+		
+		//verificação 4+4+3+2+1+0 =14
+		assertThat(resultado.getValor(), is(14.0));
+		
+	}
 
 }
