@@ -10,6 +10,8 @@ import java.util.Date;
 
 public class DataUtils {
 	
+	public static final String verificarDiaDaSeman = null;
+
 	/**
 	 * Retorna a data enviada por parametro com a adição dos dias desejado
 	 * 	a Data pode estar no futuro (dias > 0) ou no passado (dias < 0)

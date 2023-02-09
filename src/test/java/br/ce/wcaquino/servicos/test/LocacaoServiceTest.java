@@ -3,7 +3,9 @@ package br.ce.wcaquino.servicos.test;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
+import java.security.Provider.Service;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -11,6 +13,7 @@ import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.experimental.theories.suppliers.TestedOn;
 import org.junit.rules.ErrorCollector;
 import org.junit.rules.ExpectedException;
 
@@ -175,6 +178,18 @@ public class LocacaoServiceTest {
 		//verificação 4+4+3+2+1+0 =14
 		assertThat(resultado.getValor(), is(14.0));
 		
+	}
+	
+	@Test
+	public void deveDevolverNaSegundaAoAlugarNoSabado () throws FilmeSemEstoqueException, LocadoraException {
+		Usuario usuario = new Usuario ("Usuario 1");
+		List<Filme> filmes = Arrays.asList(new Filme("Filme1", 2 , 4.0));
+		
+		LocacaoService service = new LocacaoService();
+		Locacao retorno = service.alugarFilme(usuario, filmes);
+		
+		boolean ehSegunda = DataUtils.verificarDiaSemana(retorno.getDataRetorno(), Calendar.MONDAY);
+		Assert.assertTrue(ehSegunda);
 	}
 
 }
