@@ -2,6 +2,8 @@ package br.ce.wcaquino.servicos.test;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assume.assumeFalse;
+import static org.junit.Assume.assumeTrue;
 
 import java.security.Provider.Service;
 import java.util.Arrays;
@@ -38,6 +40,8 @@ public class LocacaoServiceTest {
 	
 	@Test
 	public void deveAlugarFilme() throws Exception {
+		assumeFalse(DataUtils.verificarDiaSemana(new Date (), Calendar.SATURDAY));  //o teste não sera verificado no sabado
+		
 		//cenario
 		LocacaoService service = new LocacaoService();
 		Usuario usuario = new Usuario("Usuario 1");
@@ -180,8 +184,10 @@ public class LocacaoServiceTest {
 		
 	}
 	
-	@Test
+	@Test  //
 	public void deveDevolverNaSegundaAoAlugarNoSabado () throws FilmeSemEstoqueException, LocadoraException {
+		assumeTrue(DataUtils.verificarDiaSemana(new Date(), Calendar.SATURDAY));
+		
 		Usuario usuario = new Usuario ("Usuario 1");
 		List<Filme> filmes = Arrays.asList(new Filme("Filme1", 2 , 4.0));
 		
