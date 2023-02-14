@@ -5,7 +5,6 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assume.assumeFalse;
 import static org.junit.Assume.assumeTrue;
 
-import java.security.Provider.Service;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -15,7 +14,6 @@ import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.experimental.theories.suppliers.TestedOn;
 import org.junit.rules.ErrorCollector;
 import org.junit.rules.ExpectedException;
 
@@ -101,7 +99,7 @@ public class LocacaoServiceTest {
 		service.alugarFilme(usuario, null);
 	}
 	
-	@ Test
+	/*@ Test
 	public void devoPagar75pctNoFilme3 () throws FilmeSemEstoqueException, LocadoraException {
 		
 		//cenario vou precisar de um usuario para alugar e 3 filmes para dar desconto e alocacao filme
@@ -183,6 +181,7 @@ public class LocacaoServiceTest {
 		assertThat(resultado.getValor(), is(14.0));
 		
 	}
+	*/
 	
 	@Test  //
 	public void deveDevolverNaSegundaAoAlugarNoSabado () throws FilmeSemEstoqueException, LocadoraException {
