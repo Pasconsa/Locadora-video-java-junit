@@ -16,7 +16,7 @@ import br.ce.wcaquino.utils.DataUtils;
 
 public class LocacaoService {
 	
-		public Locacao alugarFilme(Usuario usuario, List<Filme> filmes) throws FilmeSemEstoqueException, LocadoraException { //lançado uma excessão caso o limite do filme seja zero.
+		public static Locacao alugarFilme(Usuario usuario, List<Filme> filmes) throws FilmeSemEstoqueException, LocadoraException { //lançado uma excessão caso o limite do filme seja zero.
 			
 			
 			if(usuario == null) {

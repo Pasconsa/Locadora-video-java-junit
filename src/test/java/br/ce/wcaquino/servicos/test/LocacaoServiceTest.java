@@ -22,6 +22,8 @@ import br.ce.wcaquino.entidades.Locacao;
 import br.ce.wcaquino.entidades.Usuario;
 import br.ce.wcaquino.exceptions.FilmeSemEstoqueException;
 import br.ce.wcaquino.exceptions.LocadoraException;
+import br.ce.wcaquino.matchers.DiaSemanaMatcher;
+import br.ce.wcaquino.matchers.MatchersProprios;
 import br.ce.wcaquino.servicos.LocacaoService;
 import br.ce.wcaquino.utils.DataUtils;
 
@@ -98,6 +100,29 @@ public class LocacaoServiceTest {
 		//acao
 		service.alugarFilme(usuario, null);
 	}
+	
+	
+	
+	@Test  //
+	public void deveDevolverNaSegundaAoAlugarNoSabado () throws FilmeSemEstoqueException, LocadoraException {
+		assumeTrue(DataUtils.verificarDiaSemana(new Date(), Calendar.SATURDAY));
+		
+		Usuario usuario = new Usuario ("Usuario 1");
+		List<Filme> filmes = Arrays.asList(new Filme("Filme1", 2 , 4.0));
+		
+		LocacaoService service = new LocacaoService();
+		Locacao retorno = service.alugarFilme(usuario, filmes);
+		
+		//boolean ehSegunda = DataUtils.verificarDiaSemana(retorno.getDataRetorno(), Calendar.MONDAY);
+		//Assert.assertTrue(ehSegunda);
+		//assertThat(retorno.getDataRetorno(), new DiaSemanaMatcher(Calendar.MONDAY)); 
+		assertThat(retorno.getDataRetorno(), MatchersProprios.caiEm(Calendar.MONDAY));
+		assertThat(retorno.getDataRetorno(),MatchersProprios.caiNumaSegunda());
+		//assertThat(retorno.getDataRetorno(), caiNumaSegunda());
+	}
+
+
+	
 	
 	/*@ Test
 	public void devoPagar75pctNoFilme3 () throws FilmeSemEstoqueException, LocadoraException {
@@ -182,19 +207,5 @@ public class LocacaoServiceTest {
 		
 	}
 	*/
-	
-	@Test  //
-	public void deveDevolverNaSegundaAoAlugarNoSabado () throws FilmeSemEstoqueException, LocadoraException {
-		assumeTrue(DataUtils.verificarDiaSemana(new Date(), Calendar.SATURDAY));
-		
-		Usuario usuario = new Usuario ("Usuario 1");
-		List<Filme> filmes = Arrays.asList(new Filme("Filme1", 2 , 4.0));
-		
-		LocacaoService service = new LocacaoService();
-		Locacao retorno = service.alugarFilme(usuario, filmes);
-		
-		boolean ehSegunda = DataUtils.verificarDiaSemana(retorno.getDataRetorno(), Calendar.MONDAY);
-		Assert.assertTrue(ehSegunda);
-	}
 
 }
