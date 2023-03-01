@@ -15,7 +15,7 @@ public class UsuarioBuilder {
 		return builder;
 	}
 	
-	public Usuario agora() {
+	public Usuario agora() {   //porta de entrada para um usuário , objeto localizado em um unico ponto
 		return usuario;
 	}
 

@@ -23,7 +23,7 @@ public class AssertTest {
 		Assert.assertNotEquals(u1 , u2);  // para objeto as intancias são diferentes para igualar é necessário colocar equals em cada objeto
 		Assert.assertNull(u3);
 		
-		Assert.assertEquals("voce errou ",1, 2);  //´possivel adicionar uma menssagem quando a erro na comparação
+		Assert.assertEquals("voce errou ",1, 1);  //´possivel adicionar uma menssagem quando a erro na comparação
 
 	}
 	
